@@ -1,4 +1,4 @@
-package data;
+package com.alttabber.data;
 
 public enum TextType {
     MARKDOWN,
