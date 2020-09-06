@@ -22,19 +22,20 @@ public class BlogController {
         return blog;
     }
 
-    @GetMapping("/blog")
+    @GetMapping("/blog/create")
     public BlogDto createBlog(){
         return blogBusiness.createBlog();
     }
 
-    @PostMapping("/blog")
+    @PostMapping("/blog/create")
     public BlogDto createBlog(@RequestBody BlogDto blog) throws BlogNotFoundException {
         return blogBusiness.createBlog(blog);
     }
 
     @GetMapping("/blog/list")
     public List<BlogDto> getBlogsList(@RequestParam(name = "dateBetween", required = false) Date dateBetween,
-                                      @RequestParam(name = "dateAfter", required = false) Date dateAfter) {
+                                      @RequestParam(name = "dateAfter", required = false) Date dateAfter,
+                                      @RequestParam(name = "blogType", required = false) String blogType) {
         List<BlogDto> blogs;
         if(dateBetween == null && dateAfter == null){
             blogs = blogBusiness.getAllBlogs();
