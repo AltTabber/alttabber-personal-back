@@ -5,6 +5,7 @@ import com.alttabber.data.BlogDto;
 import com.alttabber.data.BlogType;
 import com.alttabber.data.TextType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import com.alttabber.repository.BlogsRepository;
 
@@ -34,6 +35,26 @@ public class BlogBusiness {
         blog.setTextType(TextType.TEXT);
         blog.setCreateDate(new Date());
         return blogsRepository.insert(blog);
+    }
+
+    public BlogDto createBlog(BlogDto blog) throws BlogNotFoundException {
+        if(blog.getId() != null){
+            BlogDto oldBlog = blogsRepository.findById(blog.getId()).orElseThrow(BlogNotFoundException::new);
+            blog.setId(oldBlog.getId());
+            blog.setCreateDate(oldBlog.getCreateDate());
+
+        }else{
+            blog.setId(UUID.randomUUID().toString());
+        }
+        return blogsRepository.save(blog);
+    }
+
+    public List<BlogDto> getBlogsByDate(Date before, Date after) {
+        return blogsRepository.findByDate(before, after);
+    }
+
+    public List<BlogDto> getAllBlogs() {
+        return blogsRepository.findAll(Sort.by("createDate"));
     }
 
 //    public List<BlogDto> getBlogsByType(){

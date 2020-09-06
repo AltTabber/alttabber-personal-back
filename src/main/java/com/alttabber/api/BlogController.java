@@ -4,9 +4,10 @@ import com.alttabber.business.BlogBusiness;
 import com.alttabber.business.exception.BlogNotFoundException;
 import com.alttabber.data.BlogDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class BlogController {
@@ -24,6 +25,24 @@ public class BlogController {
     @GetMapping("/blog")
     public BlogDto createBlog(){
         return blogBusiness.createBlog();
+    }
+
+    @PostMapping("/blog")
+    public BlogDto createBlog(@RequestBody BlogDto blog) throws BlogNotFoundException {
+        return blogBusiness.createBlog(blog);
+    }
+
+    @GetMapping("/blog/list")
+    public List<BlogDto> getBlogsList(@RequestParam(name = "dateBetween", required = false) Date dateBetween,
+                                      @RequestParam(name = "dateAfter", required = false) Date dateAfter) {
+        List<BlogDto> blogs;
+        if(dateBetween == null && dateAfter == null){
+            blogs = blogBusiness.getAllBlogs();
+        }else{
+            blogs = blogBusiness.getBlogsByDate(dateBetween, dateAfter);
+        }
+
+        return blogs;
     }
 
 }
