@@ -1,6 +1,7 @@
 package com.alttabber.repository;
 
 import com.alttabber.data.BlogDto;
+import com.alttabber.data.BlogType;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -14,4 +15,7 @@ public interface BlogsRepository extends MongoRepository<BlogDto, String> {
 
     @Query("{'createDate' : { $gte: ?0, $lte: ?1 } }")
     List<BlogDto> findByDate(Date beforeDate, Date afterDate);
+
+    @Query("{'createDate' : { blogType: ?0 } }")
+    List<BlogDto> findByBlogType(BlogType blogType);
 }

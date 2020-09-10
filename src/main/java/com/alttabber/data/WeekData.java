@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class WeekData {
 
+    private String id;
     private Date dateStart;
     private Date dateEnd;
     private Integer year;
@@ -48,5 +49,13 @@ public class WeekData {
 
     public void setContainsData(boolean containsData) {
         isContainsData = containsData;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

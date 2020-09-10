@@ -4,6 +4,8 @@ import com.alttabber.business.exception.BlogNotFoundException;
 import com.alttabber.data.BlogDto;
 import com.alttabber.data.BlogType;
 import com.alttabber.data.TextType;
+import com.alttabber.data.WeekData;
+import com.alttabber.repository.WeekDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,9 @@ public class BlogBusiness {
     @Autowired
     BlogsRepository blogsRepository;
 
+    @Autowired
+    WeekDataRepository weekDataRepository;
+
 
     public BlogDto getBlog(String id) throws BlogNotFoundException {
         Optional<BlogDto> blogOptional = blogsRepository.findById(id);
@@ -34,7 +39,17 @@ public class BlogBusiness {
         blog.setText("Ghjdthdfgsfdgf");
         blog.setTextType(TextType.TEXT);
         blog.setCreateDate(new Date());
-        return blogsRepository.insert(blog);
+        blog.setPublish(true);
+        blog = blogsRepository.insert(blog);
+
+        addBlogToWeekData(blog);
+        return blog;
+    }
+
+    private void addBlogToWeekData(BlogDto blog) {
+        WeekData weekData = weekDataRepository.findByEnteredDate(blog.getCreateDate());
+        weekData.setContainsData(true);
+        weekDataRepository.insert(weekData);
     }
 
     public BlogDto createBlog(BlogDto blog) throws BlogNotFoundException {
@@ -51,6 +66,9 @@ public class BlogBusiness {
 
     public List<BlogDto> getBlogsByDate(Date before, Date after) {
         return blogsRepository.findByDate(before, after);
+    }
+    public List<BlogDto> getBlogsByBlogType(BlogType blogType){
+        return blogsRepository.findByBlogType(blogType);
     }
 
     public List<BlogDto> getAllBlogs() {

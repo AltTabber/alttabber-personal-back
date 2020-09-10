@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class WeekDataBusiness {
@@ -31,6 +28,7 @@ public class WeekDataBusiness {
         System.out.println(calendar.getTime());
         while(calendar.getTime().before(finalDate)){
             WeekData week = new WeekData();
+            week.setId(UUID.randomUUID().toString());
             week.setYear(calendar.get(Calendar.YEAR));
             week.setDateStart(calendar.getTime());
             week.setPassed(calendar.getTime().before(currentDate));

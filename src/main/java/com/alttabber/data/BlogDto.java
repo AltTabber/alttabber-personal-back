@@ -10,6 +10,7 @@ public class BlogDto {
     private TextType textType;
     private String imageUrl;
     private Date createDate;
+    private boolean isPublish;
 
     public String getId() {
         return id;
@@ -65,5 +66,13 @@ public class BlogDto {
 
     public void setBlogType(BlogType blogType) {
         this.blogType = blogType;
+    }
+
+    public boolean isPublish() {
+        return isPublish;
+    }
+
+    public void setPublish(boolean publish) {
+        isPublish = publish;
     }
 }
